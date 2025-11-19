@@ -1,275 +1,236 @@
 # UX Specifications
 
 ## Executive Summary
-This document provides a comprehensive overview of the UX specifications for the chemical processing application. It details the key screens, components, user interactions, navigation flows, and accessibility considerations essential for an optimal user experience. The intended audience includes stakeholders and client representatives who require a clear understanding of the application's design and functionality.
+This document outlines the user experience (UX) specifications for the tank simulation application. The specifications detail the key screens, user interactions, data flows, accessibility considerations, and overall content guidelines. This comprehensive approach aims to provide an effective learning tool for students to understand chemical processes and safety protocols while engaging with the application.
 
 ## Key Screens
 
-### 1. Mixture Submission Screen
-#### Description
-The Mixture Submission Screen enables users to submit substrate and enzyme mixtures for processing, ensuring that the correct quantities and conditions are met.
+### 1. Tank Configuration Screen
+**Description:**  
+The Tank Configuration Screen enables users to set the substrate volume for the tank setup process. Students can input specific volumes and observe the effects on the chemical processes within the simulation.
 
-#### Layout
+**Layout:**
 - **Structure:** Header / Content / Footer
 - **Breakpoints:**
-  - **Mobile:** Single-column layout with stacked inputs
-  - **Tablet:** Two-column layout for inputs
-  - **Desktop:** Three-column layout with main content and sidebar
-- **Grid:**
-  - **Columns:** 12
-  - **Gap:** 16px
+  - Mobile: Single column, stacked components
+  - Tablet: Two-column layout
+  - Desktop: Three-column layout with sidebar
+- **Grid:** 12 columns, 16px gap
 
-#### Components
-
-##### Input: Substrate Volume (Liters)
-- **Properties:**
+**Components:**
+- **Input Field:**
   - **Label:** Substrate Volume (Liters)
-  - **Placeholder:** Enter 1100
+  - **Placeholder:** Enter volume
   - **Type:** Number
   - **Required:** Yes
-  - **Range:** 0 - 2000
-  - **Step:** 1
-  - **Unit:** L
-  - **Style:**
-    - Height: 40px
-    - Background: #1A1A1A
-    - Text Color: #FFFFFF
-    - Border: 1px solid #3B3B3B
-    - Focus Border: 2px solid #3F7C37
-    - Border Radius: 8px
-    - Padding: 8px 12px
-    - Margin: 8px 0
-    - Font Size: 16px
-    - Font Weight: 400
+  - **Range:** 0 to 2000 liters
+  - **Style:** Height: 40px, Background: #1A1A1A, Text: #FFFFFF, Border: 1px solid #3B3B3B, Focus Border: 2px solid #3F7C37, Border Radius: 4px, Padding: 8px 12px, Font Size: 16px
+  
+**Interactions:**
+- **Change Action:** Validates input on blur, providing visual feedback with a green border on valid input and a red border on invalid input.
 
-- **Interactions:**
-  - **Action:** Change
-  - **Triggers:** Validates input on blur
-  - **Feedback:** Visual indication of valid/invalid input
+**States:**
+- Default: Normal state with white border
+- Loading: Disabled with spinner
+- Error: Red border with error message below
+- Disabled: Grayed out, not editable
+- Success: Green border with checkmark
 
-- **States:**
-  - Default: Input is empty with a gray border.
-  - Loading: Input is disabled with a spinner.
-  - Error: Input shows a red border with an error message.
-  - Disabled: Input is grayed out.
-  - Success: Input shows a green border with a checkmark.
+**Validation:**
+- **Rules:** Required, min: 0, max: 2000, pattern: ^[0-9]+$
+- **Messages:** 
+  - Error: Please enter a value between 0 and 2000 liters
+  - Success: Valid input
 
-- **Validation:**
-  - **Rules:** Required, min: 0, max: 2000
-  - **Messages:**
-    - Error: Please enter a value between 0 and 2000 liters.
-    - Success: Valid input.
+**Accessibility:**
+- **ARIA Label:** Substrate volume input in liters
+- **ARIA Described By:** substrate-help-text
+- **Keyboard Navigation:** Tab to focus, Enter to submit
+- **Screen Reader Text:** Enter the substrate volume in liters, between 0 and 2000
 
-- **Accessibility:**
-  - **ARIA Label:** Input for substrate volume in liters
-  - **ARIA Described By:** substrate-help-text
-  - **Keyboard Navigation:** Tab to focus, Enter to submit
-  - **Screen Reader Text:** Enter the substrate volume in liters.
-
-##### Input: Enzyme Volume (Liters)
-- **Properties:** (Similar structure as Substrate Volume)
-- **Accessibility:** (Similar structure as Substrate Volume)
-
-##### Button: Submit Mixture
-- **Properties:**
-  - **Text:** Submit Mixture
-  - **Variant:** greenFilled
-  - **Size:** Large
-  - **Disabled:** No
-  - **Style:**
-    - Height: 40px
-    - Background: #509D45
-    - Text Color: #FFFFFF
-    - Border: None
-    - Hover Background: #3F7C37
-    - Border Radius: 12px
-    - Padding: 8px 16px
-    - Font Size: 16px
-    - Font Weight: 500
-
-- **Interactions:**
-  - **Action:** Click
-  - **Triggers:** Sends mixture data to the server
-  - **Feedback:** Shows loading spinner during submission
-
-- **States:**
-  - Default: Button is active.
-  - Loading: Button shows spinner and is disabled.
-  - Error: Button is red and shows an error state.
-  - Disabled: Button is grayed out.
-  - Success: Button shows a green checkmark.
-
-- **Accessibility:**
-  - **ARIA Label:** Submit mixture button
-  - **ARIA Described By:** submit-help-text
-  - **Keyboard Navigation:** Tab to focus, Enter to click
-  - **Screen Reader Text:** Click to submit mixture.
-
-#### Navigation
+**Navigation:**
 - **From:** Home Screen
-- **To:** Process Monitoring Screen
-- **Breadcrumbs:** Home > Mixture Submission
+- **To:** Enzyme Configuration Screen
+- **Breadcrumbs:** Home > Tank Configuration
 
-#### Data Flow
-- **Inputs:** User enters substrate and enzyme volumes
-- **Outputs:** POST /api/mixture/submit
-- **API Calls:** POST /api/mixture/submit
+**Data Flow:**
+- **Inputs:** User enters substrate volume
+- **Outputs:** POST /api/tank/configure with substrate volumes
+- **API Calls:** POST /api/tank/configure
 
-#### Loading State
+**Loading State:**
 - **Indicator:** Spinner
-- **Message:** Submitting mixture...
+- **Message:** Starting configuration...
 
-#### Error Handling
-- **Validation Errors:** Inline error messages below each input.
-- **API Errors:** Toast notification for API errors.
-- **User Feedback:** Clear error messages with actionable guidance.
+**Error Handling:**
+- Validation Errors: Inline error messages below the input field
+- API Errors: Toast notifications with options to retry the configuration
+- User Feedback: Clear error messages provided below the inputs
 
 ---
 
-### 2. Process Monitoring Screen
-#### Description
-This screen monitors the ongoing chemical process, displaying the current status of the mixture and temperature.
+### 2. Enzyme Configuration Screen
+**Description:**  
+The Enzyme Configuration Screen allows users to specify the enzyme volume necessary for the tank simulation. Students can enter the exact amount of enzyme needed to facilitate the reaction process.
 
-#### Layout
+**Layout:**
 - **Structure:** Header / Content / Footer
 - **Breakpoints:**
-  - **Mobile:** Single-column layout for status display
-  - **Tablet:** Two-column layout with graph
-  - **Desktop:** Three-column layout with detailed metrics
-- **Grid:**
-  - **Columns:** 12
-  - **Gap:** 16px
+  - Mobile: Single column, stacked components
+  - Tablet: Two-column layout
+  - Desktop: Three-column layout with sidebar
+- **Grid:** 12 columns, 16px gap
 
-#### Components
+**Components:**
+- **Input Field:**
+  - **Label:** Enzyme Volume (Liters)
+  - **Placeholder:** Enter volume
+  - **Type:** Number
+  - **Required:** Yes
+  - **Range:** 0 to 100 liters
+  - **Style:** Height: 40px, Background: #1A1A1A, Text: #FFFFFF, Border: 1px solid #3B3B3B, Focus Border: 2px solid #3F7C37, Border Radius: 4px, Padding: 8px 12px, Font Size: 16px
+  
+**Interactions:**
+- **Change Action:** Validates input on blur, providing visual feedback with a green border on valid input and a red border on invalid input.
 
-##### Gauge: Current Temperature (°C)
-- **Properties:**
-  - **Label:** Current Temperature (°C)
-  - **Min:** 0
-  - **Max:** 100
-  - **Current:** 37
-  - **Unit:** °C
-  - **Warning Threshold:** 45
+**States:**
+- Default: Normal state with white border
+- Loading: Disabled with spinner
+- Error: Red border with error message below
+- Disabled: Grayed out, not editable
+- Success: Green border with checkmark
+
+**Validation:**
+- **Rules:** Required, min: 0, max: 100, pattern: ^[0-9]+$
+- **Messages:** 
+  - Error: Please enter a value between 0 and 100 liters
+  - Success: Valid input
+
+**Accessibility:**
+- **ARIA Label:** Enzyme volume input in liters
+- **ARIA Described By:** enzyme-help-text
+- **Keyboard Navigation:** Tab to focus, Enter to submit
+- **Screen Reader Text:** Enter the enzyme volume in liters, between 0 and 100
+
+**Navigation:**
+- **From:** Tank Configuration Screen
+- **To:** Submit Configuration Screen
+- **Breadcrumbs:** Home > Enzyme Configuration
+
+**Data Flow:**
+- **Inputs:** User enters enzyme volume
+- **Outputs:** POST /api/enzyme/configure with enzyme volumes
+- **API Calls:** POST /api/enzyme/configure
+
+**Loading State:**
+- **Indicator:** Spinner
+- **Message:** Configuring enzyme...
+
+**Error Handling:**
+- Validation Errors: Inline error messages below the input field
+- API Errors: Toast notifications with options to retry the configuration
+- User Feedback: Clear error messages provided below the inputs
+
+---
+
+### 3. Tank Status Monitor Screen
+**Description:**  
+The Tank Status Monitor Screen displays the current status of the tank, including temperature and pressure levels. Students can monitor these metrics in real-time to ensure they remain within safe limits.
+
+**Layout:**
+- **Structure:** Header / Content / Footer
+- **Breakpoints:**
+  - Mobile: Single column, full-width components
+  - Tablet: Two-column layout
+  - Desktop: Three-column layout with sidebar
+- **Grid:** 12 columns, 16px gap
+
+**Components:**
+- **Gauge:**
+  - **Label:** Temperature (ºC)
+  - **Range:** Min: 0, Max: 100, Current: 30
+  - **Unit:** ºC
+  - **Warning Threshold:** 35
   - **Danger Threshold:** 50
-  - **Style:**
-    - Width: 100%
-    - Height: 50px
-    - Background: #1A1A1A
-    - Text Color: #FFFFFF
-    - Border: None
+  - **Style:** Height: 200px, Width: 100%, Background: #1A1A1A, Text: #FFFFFF, Border: none
+  
+**Interactions:**
+- **Update Action:** Reflects changes in the tank temperature, providing visual updates with appropriate color changes.
 
-- **States:**
-  - Default: Gauge displays current temperature.
-  - Warning: Gauge color changes to yellow.
-  - Danger: Gauge color changes to red.
+**States:**
+- Default: Shows current temperature
+- Loading: Loading temperature data...
+- Error: Error retrieving temperature data
 
-- **Accessibility:**
-  - **ARIA Label:** Current temperature gauge
-  - **ARIA Described By:** temperature-description
-  - **Screen Reader Text:** Current temperature in degrees Celsius.
+**Accessibility:**
+- **ARIA Label:** Current temperature gauge in Celsius
+- **ARIA Described By:** N/A
+- **Keyboard Navigation:** N/A
+- **Screen Reader Text:** Current temperature is displayed in Celsius
 
-##### Card: Mixture Status
-- **Properties:**
-  - **Title:** Mixture Status
-  - **Content:** Currently processing. Ensure temperature stays within range.
-  - **Style:** (Similar properties as above)
+**Navigation:**
+- **From:** Submit Configuration Screen
+- **To:** Final Report Screen
+- **Breadcrumbs:** Home > Tank Status Monitor
 
-- **States:**
-  - Default: Card displays status information.
-  - Warning: Card highlights.
-  - Error: Card shows error message.
+**Data Flow:**
+- **Inputs:** N/A
+- **Outputs:** GET /api/tank/status
+- **API Calls:** GET /api/tank/status
 
-- **Accessibility:** (Similar structure as Gauge)
+**Empty State:**
+- **Message:** No temperature data available
+- **Icon:** temperature-off
+- **Action:** Refresh to see current temperatures
 
-#### Navigation
-- **From:** Mixture Submission Screen
-- **To:** Cooling Management Screen
-- **Breadcrumbs:** Home > Process Monitoring
-
-#### Data Flow
-- **Inputs:** Real-time temperature data from API
-- **Outputs:** Updated status for monitoring
-- **API Calls:** GET /api/process/status
-
-#### Loading State
+**Loading State:**
 - **Indicator:** Spinner
-- **Message:** Loading process status...
+- **Message:** Loading tank status...
 
-#### Error Handling
-- **API Errors:** Display inline error messages.
-- **User Feedback:** Provide clear update messages.
+**Error Handling:**
+- Validation Errors: No validation errors applicable
+- API Errors: Toast notifications for API errors
+- User Feedback: Visual cues provided for temperature status
 
 ---
 
-### 3. Cooling Management Screen
-#### Description
-This screen allows users to manage the cooling jacket, adjusting the valve to control the temperature effectively.
+### 4. Final Report Screen
+**Description:**  
+The Final Report Screen presents a comprehensive report of the experiment, detailing all inputs, outputs, and any issues encountered during the simulation. Students can review this report to understand the processes involved.
 
-#### Layout
+**Layout:**
 - **Structure:** Header / Content / Footer
 - **Breakpoints:**
-  - **Mobile:** Single-column layout for controls
-  - **Tablet:** Two-column layout with control elements
-  - **Desktop:** Three-column layout with additional information
-- **Grid:**
-  - **Columns:** 12
-  - **Gap:** 16px
+  - Mobile: Single column, stacked components
+  - Tablet: Two-column layout
+  - Desktop: Three-column layout with sidebar
+- **Grid:** 12 columns, 16px gap
 
-#### Components
+**Components:**
+- **Table:**
+  - **Data:** []
+  - **Columns:**
+    - Step (key: step)
+    - Input (key: input)
+    - Output (key: output)
+    - Status (key: status)
+  - **Style:** Background: #1A1A1A, Text: #FFFFFF, Border: 1px solid #3B3B3B
+  
+**Interactions:**
+- **Click Action:** Expands row for detailed view, providing feedback by showing more details.
 
-##### Button: Open Cooling Jacket Valve
-- **Properties:** (Similar structure as Submit Mixture button)
+**States:**
+- Default: Displays experiment summary
+- Loading: Loading report data...
+- Error: Error retrieving report data
 
-- **Interactions:**
-  - **Action:** Click
-  - **Triggers:** Opens the cooling jacket valve.
-  - **Feedback:** Shows success message upon operation.
+**Accessibility:**
+- **ARIA Label:** Experiment report table
+- **ARIA Described By:** table-help-text
+- **Keyboard Navigation:** Use arrow keys to navigate rows
+- **Screen Reader Text:** Table displaying detailed experiment report
 
-- **States:** (Similar structure as Submit Mixture button)
-
-- **Accessibility:** (Similar structure as Submit Mixture button)
-
-##### Input: Desired Temperature (°C)
-- **Properties:** (Similar structure as Substrate Volume)
-
-#### Navigation
-- **From:** Process Monitoring Screen
-- **To:** Emergency Response Screen
-- **Breadcrumbs:** Home > Cooling Management
-
-#### Data Flow
-- **Inputs:** User inputs desired temperature
-- **Outputs:** PUT /api/cooling/adjust
-- **API Calls:** PUT /api/cooling/adjust
-
-#### Loading State
-- **Indicator:** Spinner
-- **Message:** Adjusting cooling settings...
-
-#### Error Handling
-- **Validation Errors:** Inline messages displayed below input.
-- **API Errors:** Error notifications for failed adjustments.
-- **User Feedback:** Clarifying messages for user action.
-
----
-
-### 4. Emergency Response Screen
-#### Description
-This screen presents emergency protocols and options for users when dangerous scenarios occur.
-
-#### Layout
-- **Structure:** Header / Content / Footer
-- **Breakpoints:**
-  - **Mobile:** Single-column layout for readability.
-  - **Tablet:** Two-column layout with protocol options.
-  - **Desktop:** Three-column layout with detailed steps and actions.
-- **Grid:**
-  - **Columns:** 12
-  - **Gap:** 16px
-
-#### Components
-
-##### Card: Emergency Protocols
-- **Properties:**
-  - **Title:** Emergency Protocols
-  - **Content:** In case
+**Navigation:**
+- **From:** Tank Status Monitor Screen
+- **To:** Home Screen
+- **
