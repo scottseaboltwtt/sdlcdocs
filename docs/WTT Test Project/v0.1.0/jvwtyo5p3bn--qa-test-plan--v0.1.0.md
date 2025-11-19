@@ -1,68 +1,62 @@
 # QA Test Plan
 
-## Introduction
-This Quality Assurance (QA) Test Plan outlines the testing strategies and scenarios for the chemical simulation system designed to ensure optimal performance and safety compliance. The plan encompasses various test scenarios, test cases, and quality checks that will validate the system's functionality and user understanding in operational contexts.
+## Executive Summary
+This QA Test Plan outlines the testing approach for the tank filling and maintenance process, ensuring functionality and safety through structured scenarios, test cases, and quality checks. The aim is to validate the operational environment's effectiveness, confirm adherence to safety regulations, and ensure that students are well-prepared to handle various operational conditions.
 
 ## Test Scenarios
-### Scenario 1: Normal Process
-- **Description:** The tank fills with the substrate mix and enzyme while maintaining the required temperature and allowing for controlled drainage.
-- **Expected Outcome:** The tank successfully fills with the substrate mix and enzyme, maintains a temperature range of 35-40 ºC for four hours, and allows for safe drainage.
 
-### Scenario 2: Trending Out of Specification - Cooling Jacket Valve Initially Closed
-- **Description:** The temperature increases beyond the specified range due to the cooling jacket valve being closed.
-- **Expected Outcome:** Temperature exceeds 40 ºC, which is resolved by opening the cooling jacket valve. This scenario highlights when students should activate the cooling jacket.
+### Scenario 1: Normal Process of Filling the Tank
+- **Description**: This scenario involves the standard procedure for filling the tank and maintaining operational conditions.
+- **Steps**:
+  1. Start with an empty tank.
+  2. Fill the tank with 1100 liters of substrate mix.
+  3. Add 50 liters of enzyme (feed).
+  4. Maintain the temperature between 35-40 ºC for a duration of 4 hours.
+  5. Utilize low air pressure to pressurize the vessel for drainage.
+- **Expected Outcome**: The tank should be filled correctly with the substrate and enzyme, temperature maintained, and the drainage process should occur smoothly.
 
-### Scenario 3: Dangerous Scenario - Substrate Flow Sensor Failure
-- **Description:** The substrate flow sensor fails, potentially creating unsafe conditions.
-- **Expected Outcome:** Students recognize unsafe conditions resulting from the sensor failure and take appropriate action by either notifying a supervisor or shutting down the pump and valve.
+### Scenario 2: Trending Out of Specification with Cooling Jacket Valve Initially Closed
+- **Description**: This scenario examines the temperature control when the cooling jacket valve is closed.
+- **Steps**:
+  1. Begin filling the tank with substrate mix and enzyme.
+  2. Monitor the temperature as it trends upwards beyond 40 ºC.
+  3. Confirm that the cooling jacket valve is closed.
+  4. Open the cooling jacket valve.
+  5. Observe and monitor the temperature as it stabilizes back within safe limits.
+- **Expected Outcome**: The temperature should return to an acceptable range after opening the cooling jacket valve.
+
+### Scenario 3: Dangerous Scenario with Substrate Flow Sensor (FIT-101) Failure
+- **Description**: This scenario simulates a failure of the substrate flow sensor to assess student responses to unsafe conditions.
+- **Steps**:
+  1. Start the substrate pump (P-101) while monitoring the flow.
+  2. Simulate a failure in the substrate flow sensor (FIT-101).
+  3. Observe the substrate flow at maximum speed (120 L/min) without regulation.
+  4. Identify the rising substrate level in the tank.
+  5. Instruct students to recognize the current unsafe conditions.
+  6. Encourage students to notify the supervisor or take corrective actions (turn off the pump and valve for substrate).
+- **Expected Outcome**: Students should recognize unsafe conditions and articulate necessary steps to ensure safety.
 
 ## Test Cases
-### Test Case 1: Normal Process Execution
-- **Test Case ID:** 1
-- **Scenario ID:** 1
-- **Steps:**
-  1. Start the simulation with an empty tank.
-  2. Fill the tank with 1100 liters of substrate mix.
-  3. Add 50 liters of enzyme.
-  4. Maintain the temperature between 35-40 ºC for 4 hours.
-  5. Use air pressure to drain the tank.
-- **Expected Result:** The tank fills successfully and maintains the correct temperature for the duration, allowing for a safe drainage process.
 
-### Test Case 2: Response to Out-of-Spec Conditions
-- **Test Case ID:** 2
-- **Scenario ID:** 2
-- **Steps:**
-  1. Start the simulation.
-  2. Initiate the cooling jacket valve in the closed position.
-  3. Monitor temperature as it trends upwards.
-  4. Open the valve to the cooling jacket when temperature exceeds 40 ºC.
-- **Expected Result:** The temperature stabilizes upon opening the cooling jacket valve, demonstrating the necessity of corrective action in real scenarios.
-
-### Test Case 3: Handling Sensor Failure
-- **Test Case ID:** 3
-- **Scenario ID:** 3
-- **Steps:**
-  1. Start the simulation with the flow sensor (FIT-101) disabled.
-  2. Observe the operation of the substrate pump (P-101) flowing at maximum speed (120 L/min).
-  3. Monitor the tank level rise and identify unsafe conditions.
-  4. Notify the supervisor or turn off the pump and valve.
-- **Expected Result:** Students correctly identify the risk and respond appropriately, reinforcing adherence to safety protocols.
+| Test Case ID | Scenario ID | Steps | Expected Result |
+|---------------|-------------|-------|------------------|
+| TC1           | 1           | Execute the normal process as outlined in test scenario 1. | Successful completion of the mixture preparation and tank drainage. |
+| TC2           | 2           | Simulate temperature rise by closing the cooling jacket valve during operation. | Temperature is corrected back to the acceptable range after activating the cooling jacket. |
+| TC3           | 3           | Introduce a flow sensor failure and observe student responses. | Students demonstrate awareness of unsafe conditions and suggest appropriate supervisory communication. |
 
 ## Quality Checks
-### Quality Check 1: Simulation Accuracy
-- **Check ID:** 1
-- **Description:** Ensure that the simulation accurately reflects the chemical processes outlined in the project's goals.
-- **Criteria:** All components must function as designed without critical failures during the normal process.
 
-### Quality Check 2: System Response Validation
-- **Check ID:** 2
-- **Description:** Validate the system's response to out-of-spec conditions.
-- **Criteria:** Responses to temperature or pressure changes must align with real-world operating procedures.
+### Quality Check 1
+- **Description**: Verify that the tank fills and operates under specified conditions effectively.
+- **Criteria**: The tank must operate correctly with no overflow or overheating issues.
 
-### Quality Check 3: User Understanding Assessment
-- **Check ID:** 3
-- **Description:** Assess user understanding during scenarios involving potential danger.
-- **Criteria:** Students should demonstrate knowledge of safety practices and effectively manage equipment failures.
+### Quality Check 2
+- **Description**: Ensure that students are able to identify out-of-spec conditions.
+- **Criteria**: Students' responses should demonstrate an understanding of procedures in non-standard operational scenarios.
+
+### Quality Check 3
+- **Description**: Assess students' ability to respond to a sensor failure.
+- **Criteria**: Students must articulate recognition of hazards and corrective measures clearly.
 
 ## Conclusion
-This QA Test Plan is designed to ensure comprehensive testing of the chemical simulation system, focusing on both functionality and safety. By executing the outlined test scenarios and cases, we aim to validate the system's performance, enhance user understanding, and maintain alignment with industry standards.
+This QA Test Plan serves as a comprehensive guide to validate the operational integrity and safety protocols associated with tank filling and maintenance. By executing the outlined scenarios, test cases, and quality checks, we ensure that both the equipment and the personnel are prepared to handle various operational challenges effectively.
