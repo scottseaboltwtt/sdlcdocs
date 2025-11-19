@@ -1,156 +1,120 @@
 # Architecture Overview
 
 ## Executive Summary
-This document presents an architecture overview of an interactive Azure-hosted chemistry simulation tool, designed in alignment with the Azure Well-Architected Framework pillars. The architecture effectively models a tank-filling and reaction process, accommodating normal, trending-unsafe, and dangerous scenarios. It is essential to note that all recommendations are based solely on the provided project requirements, as no vector memory snippets were returned.
+This document provides an overview of an Azure-based interactive chemistry simulation tool designed to enhance student learning through controlled mixing processes. The architecture facilitates realistic tank operations, including filling, enzyme addition, temperature maintenance, and pressure-assisted draining. It supports various scenarios, such as normal operation, out-of-spec conditions, and failure events. The solution is aligned with the Azure Well-Architected Framework, ensuring controlled operations, student interaction workflows, and safety modeling through secure, cost-efficient, reliable, and observable components.
+
+## Architecture Summary
+The architecture encompasses the following key features:
+- **Realistic Operations**: Simulates tank operations including filling to 1100 L substrate, adding 50 L enzyme, and maintaining a temperature range of 35–40°C.
+- **Scenarios**: Models conditions such as normal operations, cooling jacket valve failures, and dangerous situations like the FIT-101 failure.
+- **Framework Alignment**: Adheres to Azure Well-Architected Framework pillars, ensuring reliability, security, performance efficiency, cost optimization, and operational excellence.
 
 ## Architectural Principles
-The following principles guide the architecture design, categorized by their alignment with the Azure Well-Architected Framework pillars:
+The following principles guide the architecture design:
 
 ### Reliability
-- **Design for Failure and Controlled Scenario Simulation**
-  - Justification: The chemistry training tool must gracefully simulate sensor faults, such as the FIT-101 failure and temperature out-of-spec trends.
-
-- **Design for Extensibility of New Chemistry Scenarios**
-  - Justification: Ensure flexible simulation logic to incorporate future unsafe conditions or expanded chemical processes.
+- **Event Processing**: Utilizes Azure Functions with retry policies to ensure simulations mimic real-world behavior under transient failures.
+- **Decoupled Simulation**: Implements Azure Service Bus to separate simulation steps from the user interface, ensuring stable operation during high user loads.
 
 ### Security
-- **Least Privilege and Secure Data Boundaries**
-  - Justification: Simulation logic, student answers, and telemetry must be access-controlled through Azure Active Directory (AD) and Key Vault secrets.
-
-- **Data Protection at Rest and in Transit**
-  - Justification: Simulation state and student responses stored in Azure SQL, Blob, or Cosmos DB must be encrypted with managed keys.
-
-- **Secure Access**
-  - Justification: Ensure secure access for students, admins, and instructors through Azure AD, Key Vault, and API Management.
+- **Access Control**: Employs Azure AD for authentication, restricting access for educators and students while applying least-privilege role-based access control (RBAC).
+- **Sensitive Data Protection**: Stores sensitive configurations, including simulation thresholds, in Azure Key Vault.
 
 ### Cost Optimization
-- **Cost-Efficient Consumption-Based Compute**
-  - Justification: Utilizing Azure Functions, App Service, and PaaS storage minimizes operational costs for the training simulation platform.
-
-- **Use Managed Services to Reduce Operational Burden**
-  - Justification: Azure PaaS services eliminate the need to manage compute clusters for a small educational application.
+- **Serverless Computing**: Leverages serverless technologies (Functions, Static Web Apps) to reduce costs for classroom and semester usage patterns.
+- **Autoscaling**: Applies autoscaling on the App Service Plan only during large multi-student labs.
 
 ### Operational Excellence
-- **Operational Observability**
-  - Justification: Monitoring student actions, scenario branching, and simulation metrics using Azure Monitor, Application Insights, and Log Analytics is essential.
-
-- **Infrastructure as Code**
-  - Justification: Using Bicep or Terraform enables controlled deployment and safe iteration.
+- **Centralized Monitoring**: Implements Azure Monitor, Log Analytics, and Application Insights for diagnosing simulation anomalies and maintaining performance baselines.
 
 ### Performance Efficiency
-- **Performance-Optimized Event Flow**
-  - Justification: State updates for tank temperature, level rise, pressure, and flow dynamics require low-latency APIs and scalable event handling.
+- **Event-Driven Architecture**: Uses Azure Event Grid to react promptly to simulation changes, such as temperature fluctuations caused by closed cooling jacket valves.
+- **Low-Latency Caching**: Employs Azure Cache for Redis to maintain real-time tank states for interactive UI updates.
 
-- **Scalable Separation of Simulation Engine and UI**
-  - Justification: Front-end loads must not affect simulation update throughput.
+### Continuous Improvement
+- **Versioned Logic**: Treats simulation state transitions as versioned logic to support iterative improvements.
 
 ## Reference Architecture
-### Components
-The following components constitute the architecture:
 
-| Component                              | Purpose                                                         |
-|----------------------------------------|-----------------------------------------------------------------|
-| Azure Front Door                       | Global entry, TLS termination, routing to the web front end     |
-| Azure CDN                              | Serves static front-end assets with low latency                 |
-| VNet with Subnets (Web, App, Data)    | Network segmentation and isolation                               |
-| NSGs                                   | Traffic filtering between tiers                                  |
-| Azure App Service (Front-End Web UI)  | Provides UI for student interaction with the tank simulation     |
-| Azure App Service (Simulation Engine API) | Executes tank process logic including flow rates, temperature changes, and sensor failures |
-| Azure Functions                        | Manages background tasks such as simulation ticks and scoring workflows |
-| API Management                         | Secures, governs, and versions simulation APIs                  |
-| Azure Service Bus                      | Decouples simulation events, triggers, and updates              |
-| Azure Event Grid                       | Publishes scenario events to observers such as monitoring services |
-| Azure SQL Database                     | Stores student submissions, scenario runs, and answer history   |
-| Azure Cosmos DB                        | Stores real-time simulation state documents                      |
-| Azure Blob Storage                     | Stores learning materials, logs, and exports                    |
-| Azure Key Vault                        | Stores secrets, API keys, and database credentials               |
-| Azure Active Directory                 | Provides authentication for all users                            |
-| Azure Application Insights             | Collects telemetry for simulation engine performance             |
-| Azure Monitor + Log Analytics Workspace | Centralized logs, metrics, and scenario trend analytics         |
-| Azure Backup                           | Backups for SQL and Blob storage                                 |
-| Azure Firewall                         | Provides perimeter security for the simulation environment       |
-| Private Endpoints                      | Secure access from app services to data components              |
-| Azure DevOps Pipelines                 | Automates CI/CD deployment processes                             |
-| Bicep/Terraform IaC                   | Declares and deploys infrastructure consistently                |
+### Key Components
+- Azure Static Web Apps: Student interactive UI
+- Azure App Service: API backend for simulation control
+- Azure Functions: Event-driven simulation processors
+- Azure Service Bus: Simulation event queue
+- Azure Event Grid: Scenario triggers and state change notifications
+- Azure Cosmos DB: Simulation state store
+- Azure Cache for Redis: Real-time tank parameter cache
+- Azure Key Vault: Configuration management
+- Azure AD: Identity and access management
+- Azure API Management: API consumption management
+- Azure Monitor and Log Analytics: Monitoring and logging
+- Application Insights: Telemetry for APIs and Functions
+- Azure Storage Blob: Historical logs and student submissions
+- Azure Virtual Network: Network isolation for backend services
+- NSGs and Azure Firewall: Traffic control and perimeter filtering
+- Private Endpoints: Secure connections for database and storage
+- Azure Backup: Long-term storage of simulation logs
+- Azure Front Door: Global availability optimization
 
 ### Data Flow
-The following table outlines the data flow within the architecture:
+1. Student UI sends interaction event → API Management → App Service API
+2. API requests simulation logic → Azure Functions → Service Bus
+3. Service Bus triggers simulation step processor (e.g., filling tank)
+4. Function updates real-time state → Cosmos DB
+5. Function pushes immediate state → Redis Cache
+6. Event Grid broadcasts scenario changes (e.g., temperature increase)
+7. Static Web App polls for updated tank state via API
+8. API retrieves fast state from Redis
+9. API reads historical state from Cosmos DB as necessary
+10. Cosmos DB triggers alerts when thresholds are exceeded
+11. Alerts routed to Monitor → notifications for instructors
+12. Key Vault provides access to secure configurations
+13. Simulation history stored in Blob Storage for review
+14. All telemetry routed to Application Insights and Log Analytics
+15. Private Endpoints secure traffic between services
 
-| From                                   | To                                    | Purpose                                      |
-|----------------------------------------|---------------------------------------|----------------------------------------------|
-| Student Browser                        | Azure Front Door                      | HTTPS access to UI                           |
-| Front Door                             | Web App Service                       | Routes UI requests                           |
-| Web App Service                        | Simulation Engine API                 | Sends user actions (e.g., add substrate)    |
-| Simulation Engine API                  | Cosmos DB                            | Updates simulation state documents           |
-| Simulation Engine API                  | Service Bus                           | Emits simulation events                       |
-| Service Bus                            | Azure Functions                       | Triggers simulation tick processing           |
-| Azure Functions                        | Cosmos DB                            | Updates predicted state                       |
-| Azure Functions                        | SQL Database                          | Records student responses and scenario scoring|
-| Event Grid                             | Monitor/App Insights                  | Telemetry for scenario transitions            |
-| Web App Service                        | SQL Database                          | Queries student history and scoring           |
-| All Compute                            | Key Vault                             | Retrieves secrets securely                    |
-| All Components                         | Log Analytics                         | Central log and metrics collection            |
-| Backup Jobs                            | Azure Backup                          | Protects SQL and Blob data                   |
+## Component Mapping
+### Features to Components
+- Mixing simulation: Azure Functions, Cosmos DB, Event Grid, Service Bus
+- Temperature control: Azure Functions, Key Vault thresholds
+- Enzyme denature check: Functions, Cosmos DB, Monitor alerts
+- Pressure-assisted draining: Functions, event-driven pipeline
+- Failure scenario modeling: Functions, Service Bus, Event Grid
+- Student interaction UI: Static Web Apps, API Management
+- Real-time tank display: Redis Cache, App Service API
+- Scenario logging: Blob Storage, Cosmos DB
 
-## Mappings
-### Feature to Component
-The following table maps features to their respective components:
-
-| Feature                                                       | Components                                       |
-|---------------------------------------------------------------|-------------------------------------------------|
-| Simulate tank fill to 1100 L, enzyme feed 50 L              | Simulation Engine API, Cosmos DB, Functions     |
-| Temperature range enforcement (35–40 ºC) and denaturation at 50 ºC | Simulation Engine API, Functions, Cosmos DB     |
-| Scenario #2 temperature trending out of spec                  | Simulation Engine API, Cosmos DB, Service Bus, Functions |
-| Scenario #3 flow sensor FIT-101 failure and pump runaway     | Simulation Engine API, Cosmos DB, Service Bus, Functions |
-| Student response capture                                       | Web App, SQL Database                           |
-| Instructor review                                             | Web App, SQL Database                           |
-| Secure access                                                | Azure AD, Key Vault, API Management             |
-
-### Constraint Impact
-| Constraint          | Impact                                       |
-|---------------------|----------------------------------------------|
-| None specified      | No external limitations; architecture applies full best practices. |
+### Constraints Impact
+- No specific constraints provided; standard Well-Architected Framework best practices applied.
 
 ### Quality Assurance Coverage
-| Quality                | Mapping                                                                          |
-|-----------------------|---------------------------------------------------------------------------------|
-| Reliability           | High availability via App Service, Service Bus, multi-zone SQL; failure injection supported by scenario logic |
-| Security              | AAD authentication, private endpoints, Key Vault, encrypted storage             |
-| Performance           | Cosmos DB low-latency state access, scalable App Services                       |
-| Operational Excellence | Monitoring, Application Insights, Infrastructure as Code (IaC), Continuous Integration/Continuous Delivery (CI/CD) |
-| Cost Optimization     | Serverless functions, PaaS data storage choices                                 |
+- Reliability: Ensured via Service Bus, retries, and Function scaling.
+- Security: Managed through Key Vault, AAD, and private endpoints.
+- Performance: Maintained via Redis Cache and serverless computing.
+- Cost Optimization: Achieved through serverless architecture and monitoring-based scaling.
+- Operational Excellence: Enhanced through centralized monitoring and alerts.
 
-## Frameworks
-### Azure Well-Architected Framework
-The architecture is designed based on the following pillars of the Azure Well-Architected Framework:
-- Reliability
-- Security
-- Cost Optimization
-- Operational Excellence
-- Performance Efficiency
+## Framework Compliance
+- Azure Well-Architected Framework: Focuses on reliability, security, operational excellence, cost optimization, and performance efficiency.
 
 ## Architectural Decision Records (ADR)
-| ID       | Decision                                                    | Reason                                                | Framework Pillar                             |
-|----------|------------------------------------------------------------|-------------------------------------------------------|----------------------------------------------|
-| ADR-001  | Use Cosmos DB for real-time simulation state               | Low latency, flexible schema for tank conditions.     | Performance Efficiency / Reliability         |
-| ADR-002  | Use API Management for all simulation endpoints            | Security, throttling, governance.                      | Security / Operational Excellence            |
-| ADR-003  | Split simulation engine into App Service API + Functions   | Separation of synchronous API calls and async scenario ticks. | Performance Efficiency / Cost Optimization   |
+1. **ADR-001**: Utilize event-driven architecture for simulation logic to enhance decoupling and reproducibility.
+2. **ADR-002**: Implement Cosmos DB for simulation state management to achieve low latency and high availability.
+3. **ADR-003**: Use Redis Cache for real-time state feedback to ensure low-latency user interactions.
 
 ## Fitness Functions
-| Attribute        | Function                                                                           |
-|------------------|-----------------------------------------------------------------------------------|
-| Reliability      | Automatically verify simulation tick completion under load; fail if >1% tick delays. |
-| Performance      | Response time for simulation UI <150ms at the 95th percentile.                   |
-| Security         | Periodic penetration tests; alerts if API exposed without authentication.        |
-| Cost Optimization | Monthly cost anomaly detection >20% over baseline.                               |
-| Operational Excellence | Deployments must complete with zero downtime and <5% rollback rate.          |
+- Response latency for tank state queries should remain under 100ms at peak load.
+- Temperature anomaly detection must trigger alerts within 3 seconds of threshold violations.
+- Consistency between Redis and Cosmos DB simulation states must exceed 99.9%.
+- API availability must meet 99.9% to support classroom activities.
 
 ## Assumptions
-- No vector memory context was available.
-- Users access via public internet with Azure AD authentication.
-- Simulation complexity remains within PaaS capability.
+- The architecture is based solely on user-provided context; no prior vector memory found.
+- Assumes student concurrency up to moderate classroom scale (100–500 users).
+- Requires full modeling of scenarios: normal, cooling jacket issue, and FIT-101 failure.
 
 ## Open Questions
-- Should simulation physics be more detailed (thermodynamics, pressure curves)?
-- Do instructors need exportable reports or LMS integration?
-- Will scenarios expand to multi-reactor or multi-tank systems?
+- Is real-time graphing of temperature and flow over time necessary?
+- Should instructors have the ability to define custom scenarios beyond the three provided?
+- Is multi-language support required for international chemistry programs?
+- Should simulation logs be retained for educational auditing across multiple semesters?
