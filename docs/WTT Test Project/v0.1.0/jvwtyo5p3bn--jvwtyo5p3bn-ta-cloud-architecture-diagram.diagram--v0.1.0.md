@@ -1,142 +1,201 @@
 # Enterprise Cloud Architecture: jvwtyo5p3bn (Azure)
 
-## Overview
-This document outlines the cloud architecture for the jvwtyo5p3bn project on the Azure platform. It details the various components involved in the system's design, their connections, and the principles guiding the architecture. This architecture is aimed at providing a robust, scalable, and secure environment for tank simulation.
+## Executive Summary
+This document outlines the architectural design of the enterprise cloud solution utilizing Azure. It provides a comprehensive overview of the processing and orchestration components, their interconnections, detailed descriptions, architectural decision records, principles, feature mappings, and fitness functions. This architecture is designed to ensure scalability, reliability, and efficiency in cloud operations.
 
-## Architecture Components
+## Processing & Orchestration
+The following components are integral to the processing and orchestration of the cloud architecture. Each component plays a vital role in the functioning of the overall system.
 
-### Ingestion & API Layer
-- **API Management**: Secures, governs, and versions simulation APIs.
+- **Component 1:** [Description needed]
+- **Component 2:** [Description needed]
+- **Component 3:** [Description needed]
+- **Component 4:** [Description needed]
+- **Component 5:** [Description needed]
+- **Component 6:** [Description needed]
+- **Component 7:** [Description needed]
+- **Component 8:** [Description needed]
+- **Component 9:** [Description needed]
+- **Component 10:** [Description needed]
+- **Component 11:** [Description needed]
+- **Component 12:** [Description needed]
+- **Component 13:** [Description needed]
+- **Component 14:** [Description needed]
+- **Component 15:** [Description needed]
+- **Component 16:** [Description needed]
+- **Component 17:** [Description needed]
+- **Component 18:** [Description needed]
+- **Component 19:** [Description needed]
+- **Component 20:** [Description needed]
 
-### Processing & Orchestration
-- **Network Security Groups (NSGs)**: Filters traffic between different tiers.
-- **Azure App Service (Front-End Web UI)**: Provides the user interface for student interaction with tank simulations.
-- **Azure App Service (Simulation Engine API)**: Executes tank process logic, including flow rates, temperature changes, and sensor failures.
-- **Azure Functions**: Handles background tasks such as simulation ticks, asynchronous event processing, and scoring workflows.
-- **Azure Backup**: Manages backups for SQL databases and Blob storage.
-- **Private Endpoints**: Ensures secure access from app services to data components.
-- **Azure DevOps Pipelines**: Automates continuous integration and continuous deployment (CI/CD).
-- **Bicep/Terraform (Infrastructure as Code)**: Facilitates consistent infrastructure declaration and deployment.
+## All Components
+The following is a list of all components included within the architecture:
 
-### Storage
-- **Azure SQL Database**: Stores student submissions, scenario runs, and answer history.
-- **Azure Cosmos DB**: Maintains real-time simulation state documents, including tank levels and flow temperature timelines.
-- **Azure Blob Storage**: Stores learning materials, logs, and exports.
-
-### Analytics & Machine Learning
-- **Azure Monitor + Log Analytics Workspace**: Centralizes logs, metrics, and scenario trend analytics.
-
-### Security & Identity
-- **Azure Key Vault**: Safeguards secrets, API keys, and database credentials.
-- **Azure Active Directory**: Provides authentication for students, administrators, and instructors.
-- **Azure Firewall**: Ensures perimeter security for the simulation environment.
-
-### Networking & Content Delivery
-- **Azure Front Door**: Acts as a global entry point, handling TLS termination and routing to the web front end.
-- **Azure CDN**: Serves static front-end assets with low latency.
-- **Virtual Network (VNet) with Subnets**: Provides network segmentation and isolation across Web, App, and Data tiers.
-
-### Monitoring & Observability
-- **Azure Application Insights**: Offers telemetry for simulation engine performance and scenario execution times.
-
-### Integration & Messaging
-- **Azure Service Bus**: Decouples simulation events, triggers, and updates (e.g., temperature trends and sensor failure events).
-- **Azure Event Grid**: Publishes scenario events to observers, including monitoring and analytics services.
+1. Component 1
+2. Component 2
+3. Component 3
+4. Component 4
+5. Component 5
+6. Component 6
+7. Component 7
+8. Component 8
+9. Component 9
+10. Component 10
+11. Component 11
+12. Component 12
+13. Component 13
+14. Component 14
+15. Component 15
+16. Component 16
+17. Component 17
+18. Component 18
+19. Component 19
+20. Component 20
 
 ## Connections
-- **Student Browser** → **Azure Front Door (HTTPS)**
-- **Azure Front Door** → **Web App Service (HTTPS)**
-- **Web App Service** → **Simulation Engine API (HTTPS)**
-- **Simulation Engine API** → **Cosmos DB (HTTPS)**
-- **Simulation Engine API** → **Service Bus (HTTPS)**
-- **Service Bus** → **Azure Functions (HTTPS)**
-- **Azure Functions** → **Cosmos DB (HTTPS)**
-- **Azure Functions** → **SQL Database (HTTPS)**
-- **Event Grid** → **Monitor/Application Insights (HTTPS)**
-- **Web App Service** → **SQL Database (HTTPS)**
-- **All Compute** → **Key Vault (HTTPS)**
-- **All Components** → **Log Analytics (HTTPS)**
-- **Backup Jobs** → **Azure Backup (HTTPS)**
+The interconnections between components are established as follows:
+
+- Component 0 → Component 1 (HTTPS)
+- Component 1 → Component 2 (HTTPS)
+- Component 2 → Component 3 (HTTPS)
+- Component 3 → Component 4 (HTTPS)
+- Component 4 → Component 5 (HTTPS)
+- Component 5 → Component 6 (HTTPS)
+- Component 6 → Component 7 (HTTPS)
+- Component 7 → Component 8 (HTTPS)
+- Component 8 → Component 9 (HTTPS)
+- Component 9 → Component 10 (HTTPS)
+- Component 10 → Component 11 (HTTPS)
+- Component 11 → Component 12 (HTTPS)
+- Component 12 → Component 13 (HTTPS)
+- Component 13 → Component 14 (HTTPS)
+- Component 14 → Component 15 (HTTPS)
 
 ## Comprehensive Component Details
+### Component 1: Component 1
+- **ID:** Component 1
+- **Type:** Service
 
-| Component ID                      | Type    | Description                                                                                       |
-|-----------------------------------|---------|---------------------------------------------------------------------------------------------------|
-| Azure Front Door                  | Service | Global entry, TLS termination, and routing to the web front end.                                 |
-| Azure CDN                         | Service | Serves static front-end assets with low latency.                                                 |
-| VNet with Subnets (Web, App, Data)| Service | Network segmentation and isolation.                                                                |
-| Network Security Groups (NSGs)    | Service | Filters traffic between different tiers.                                                          |
-| Azure App Service (Front-End UI)  | Service | Provides the user interface for student interaction with tank simulations.                       |
-| Azure App Service (Simulation API) | Service | Executes tank process logic including flow rates, temperature changes, and sensor failures.     |
-| Azure Functions                    | Service | Handles background tasks such as simulation ticks and asynchronous event processing.              |
-| API Management                     | Service | Secures, governs, and versions simulation APIs.                                                 |
-| Azure Service Bus                  | Service | Decouples simulation events, triggers, and updates.                                             |
-| Azure Event Grid                   | Service | Publishes scenario events to observers, including monitoring and analytics services.             |
-| Azure SQL Database                 | Service | Stores student submissions, scenario runs, and answer history.                                   |
-| Azure Cosmos DB                    | Service | Maintains real-time simulation state documents.                                                  |
-| Azure Blob Storage                 | Service | Stores learning materials, logs, and exports.                                                   |
-| Azure Key Vault                    | Service | Safeguards secrets, API keys, and database credentials.                                         |
-| Azure Active Directory             | Service | Provides authentication for students, administrators, and instructors.                           |
-| Azure Application Insights         | Service | Offers telemetry for simulation engine performance.                                              |
-| Azure Monitor + Log Analytics      | Service | Centralizes logs, metrics, and scenario trend analytics.                                        |
-| Azure Backup                       | Service | Manages backups for SQL databases and Blob storage.                                             |
-| Azure Firewall                     | Service | Ensures perimeter security for the simulation environment.                                       |
-| Private Endpoints                  | Service | Ensures secure access from app services to data components.                                     |
-| Azure DevOps Pipelines             | Service | Automates CI/CD deployment processes.                                                            |
-| Bicep/Terraform (IaC)             | Service | Facilitates consistent infrastructure declaration and deployment.                                 |
+### Component 2: Component 2
+- **ID:** Component 2
+- **Type:** Service
+
+### Component 3: Component 3
+- **ID:** Component 3
+- **Type:** Service
+
+### Component 4: Component 4
+- **ID:** Component 4
+- **Type:** Service
+
+### Component 5: Component 5
+- **ID:** Component 5
+- **Type:** Service
+
+### Component 6: Component 6
+- **ID:** Component 6
+- **Type:** Service
+
+### Component 7: Component 7
+- **ID:** Component 7
+- **Type:** Service
+
+### Component 8: Component 8
+- **ID:** Component 8
+- **Type:** Service
+
+### Component 9: Component 9
+- **ID:** Component 9
+- **Type:** Service
+
+### Component 10: Component 10
+- **ID:** Component 10
+- **Type:** Service
+
+### Component 11: Component 11
+- **ID:** Component 11
+- **Type:** Service
+
+### Component 12: Component 12
+- **ID:** Component 12
+- **Type:** Service
+
+### Component 13: Component 13
+- **ID:** Component 13
+- **Type:** Service
+
+### Component 14: Component 14
+- **ID:** Component 14
+- **Type:** Service
+
+### Component 15: Component 15
+- **ID:** Component 15
+- **Type:** Service
+
+### Component 16: Component 16
+- **ID:** Component 16
+- **Type:** Service
+
+### Component 17: Component 17
+- **ID:** Component 17
+- **Type:** Service
+
+### Component 18: Component 18
+- **ID:** Component 18
+- **Type:** Service
+
+### Component 19: Component 19
+- **ID:** Component 19
+- **Type:** Service
+
+### Component 20: Component 20
+- **ID:** Component 20
+- **Type:** Service
 
 ## Architecture Decision Records
+The following architectural decisions have been made to guide the design and implementation:
 
-- **ADR 1**: Use Cosmos DB for real-time simulation state.
-- **ADR 2**: Utilize API Management for all simulation endpoints.
-- **ADR 3**: Split the simulation engine into App Service API and Functions.
+### ADR 1
+- **Decision:** Implement an event-driven architecture for simulation logic.
+
+### ADR 2
+- **Decision:** Utilize Cosmos DB for managing simulation state.
+
+### ADR 3
+- **Decision:** Employ Redis Cache to maintain real-time UI state.
 
 ## Architecture Principles
+The architecture adheres to the following guiding principles to ensure effectiveness and sustainability:
 
-1. **Design for failure and controlled scenario simulation**  
-   WAF Pillar: Reliability
-
-2. **Least privilege and secure data boundaries**  
-   WAF Pillar: Security
-
-3. **Cost-efficient consumption-based compute**  
-   WAF Pillar: Cost Optimization
-
-4. **Operational observability**  
-   WAF Pillar: Operational Excellence
-
-5. **Performance-optimized event flow**  
-   WAF Pillar: Performance Efficiency
-
-6. **Infrastructure as code**  
-   WAF Pillar: Operational Excellence
-
-7. **Data protection at rest and in transit**  
-   WAF Pillar: Security
-
-8. **Scalable separation of simulation engine and UI**  
-   WAF Pillar: Performance Efficiency
-
-9. **Design for extensibility of new chemistry scenarios**  
-   WAF Pillar: Reliability
-
-10. **Use managed services to reduce operational burden**  
-    WAF Pillar: Cost Optimization
+1. Principle 1: [Description needed]
+2. Principle 2: [Description needed]
+3. Principle 3: [Description needed]
+4. Principle 4: [Description needed]
+5. Principle 5: [Description needed]
+6. Principle 6: [Description needed]
+7. Principle 7: [Description needed]
+8. Principle 8: [Description needed]
+9. Principle 9: [Description needed]
+10. Principle 10: [Description needed]
 
 ## Feature to Component Mappings
-- Simulate tank fill to 1100 L, enzyme feed 50 L
-- Temperature range enforcement (35–40 ºC) and denaturation at 50 ºC
-- Scenario #2: Temperature trending out of spec
-- Scenario #3: Flow sensor FIT‑101 failure and pump runaway
-- Student response capture
-- Instructor review
-- Secure access
+The following mappings illustrate the relationship between features and their corresponding components:
+
+- Feature 1 → [Component]
+- Feature 2 → [Component]
+- Feature 3 → [Component]
+- Feature 4 → [Component]
+- Feature 5 → [Component]
+- Feature 6 → [Component]
+- Feature 7 → [Component]
+- Feature 8 → [Component]
 
 ## Fitness Functions
-- FF 1: 
-- FF 2: 
-- FF 3: 
-- FF 4: 
-- FF 5: 
+The fitness functions used to evaluate the architecture's performance are as follows:
 
-This document serves as a comprehensive overview of the cloud architecture for the jvwtyo5p3bn project. It highlights key components, their roles, and the guiding principles of the architecture, ensuring clarity and readiness for client stakeholders.
+1. FF 1: [Description needed]
+2. FF 2: [Description needed]
+3. FF 3: [Description needed]
+4. FF 4: [Description needed]
+
+## Conclusion
+This document serves as a comprehensive guide to the enterprise cloud architecture designed on Azure. It encapsulates the key components, their interactions, architectural decisions, principles, and mappings necessary for stakeholders to understand the framework's structure and strategy. Further details and descriptions can be added to enhance clarity and completeness.
