@@ -16,7 +16,7 @@ This system is an AI-powered backend designed to process and respond to user que
 ### Business Value and Purpose
 
 
-![Functional Flow Diagram](docs/Code Analysis Prototype/v1.0.29/gpjbhmg6n8--code-analysis-code-analysis-functional-flow-diagram--v1.0.29.pngg)
+![Functional Flow Diagram](https://github.com/scottseaboltwtt/sdlcdocs/blob/main/docs/Code%20Analysis%20Prototype/v1.0.29/gpjbhmg6n8--code-analysis-code-analysis-functional-flow-diagram--v1.0.29.png)
 
 The platform enables organizations to provide users with intelligent, automated query handling. By utilizing AI agents and vector embeddings, it delivers contextually relevant answers, supports query improvement, and enhances information retrieval. This reduces manual workload, improves response accuracy, and enables scalable, automated support or search solutions.
 
