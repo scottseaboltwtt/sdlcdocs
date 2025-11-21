@@ -16,7 +16,7 @@ This platform provides an AI-driven backend for advanced query handling, semanti
 ### Business Value and Purpose
 
 
-![Functional Flow Diagram](eraser-prompts/code-analysis-code-analysis-functional-flow-diagram.png)
+![Functional Flow Diagram](code-analysis-code-analysis-functional-flow-diagram.png)
 
 The system enables organizations to deliver smarter, context-aware search and query experiences. By automating query understanding and leveraging AI for semantic matching, it improves the relevance of results, reduces manual intervention, and enhances user satisfaction. The modular architecture allows rapid adaptation to new domains and evolving business needs.
 
