@@ -16,7 +16,7 @@ This platform provides a backend system for intelligent, AI-powered query proces
 ### Business Value and Purpose
 
 
-![Functional Flow Diagram](code-analysis-code-analysis-functional-flow-diagram.png)
+![Functional Flow Diagram](https://github.com/scottseaboltwtt/sdlcdocs/blob/main/docs/Code%20Analysis%20Prototype/v1.0.30/gpjbhmg6n8--code-analysis-code-analysis-functional-flow-diagram--v1.0.30.png)
 
 The platform enables organizations to automate and enhance information retrieval, context detection, and query understanding using state-of-the-art AI techniques. By integrating prompt engineering and vector embeddings, the system delivers more accurate and contextually relevant responses, improving user satisfaction and operational efficiency.
 
