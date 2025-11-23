@@ -16,7 +16,7 @@ This system provides an AI-driven backend for advanced query processing, context
 ### Business Value and Purpose
 
 
-![Functional Flow Diagram](code-analysis--code-analysis-code-analysis-functional-flow-diagram--<version>.png)
+![Functional Flow Diagram](gpjbhmg6n8--code-analysis-code-analysis-architecture-diagram--v1.0.33.png)
 
 The platform enables organizations to harness the power of AI for natural language query understanding, context-aware information retrieval, and intelligent response generation. By modularizing AI agent logic and supporting vector-based retrieval, the system can be extended for various domains, such as knowledge management, customer support, or intelligent search.
 
